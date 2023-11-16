@@ -6,30 +6,9 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Scanner;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
-    static public String Inserisci(Scanner input){
-        System.out.println("Inserimento nome utente: ");
-        String testo = input.nextLine();
-        return testo;
-    }
-
-    static public String Comunica(Scanner input){
-        System.out.println("\nOpzioni per comunicare: @everyone - Nome");
-        System.out.println("\nInserisci l'username per comunicare: ");
-        String nome = input.nextLine();
-        return nome;
-    }
-
-
     public static void main( String[] args ){
-
-        
-
         try{
             Socket socket = new Socket("localhost", 3000);
 
@@ -37,39 +16,45 @@ public class App
                 thread.start();
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                System.out.println("Connessione effettuato a un canale Server.");
+                System.out.println("Connessione effettuata con un canale server.");
                 Scanner input = new Scanner(System.in);
-                String testo = "";
-                String messaggio = "";
+                String testo;
+                String messaggio;
+                String username;
                 do{
-                    System.out.println("Inserimento nome utente: ");
-                    testo = input.nextLine();
-                    out.writeBytes(testo + "\n");
+                    System.out.println("\nInserimento nome utente: ");
+                    username = input.nextLine();
+                    out.writeBytes(username + "\n");
                     messaggio = in.readLine();
                     if(messaggio.equals("!")){
                         
-                        System.out.println("ATTENZIONE: Sei stupido, l'username inserito è già usato.\n");
+                        System.out.println("\nATTENZIONE: L'username inserito è già usato.");
                     }
                 }while(messaggio.equals("!"));
                 do{
-
-                    do{
-                        System.out.println("\nOpzioni per comunicare: @everyone / Username\n");
-                        System.out.println("Scrivi il nome dell'utente con cui vuoi comunicare: ");
-                        testo = input.nextLine();
-                        out.writeBytes(testo + "\n");
-                        messaggio = in.readLine();
-                        if(messaggio.equals("!")){
-                            System.out.println("\nATTENZIONE: Coglione, l'username inserito per comunicare non è valido");
-                        }
-                    }while(messaggio.equals("#"));
-                    if(messaggio.equals("-")){
-                        System.out.println("\nIl client" + testo + "chiude la connessione\n");
-                    }else{
-                        // INVIO MESSAGGIO
+                    System.out.println("\nOpzioni per comunicare: @everyone / Username (@exit per uscire)");
+                    System.out.println("\nScrivi il nome dell'utente con cui vuoi comunicare: ");
+                    username = input.nextLine();
+                    out.writeBytes(username + "\n");
+                    messaggio = in.readLine();
+                    switch(messaggio){
+                        case "#":
+                            System.out.println("\nATTENZIONE: L'username inserito per comunicare non è valido");
+                            break;
+                        case "&":
+                            System.out.println("\nHai chiuso la connessione");
+                            break;
+                        case ".":
+                            System.out.println("\nInserisci il messaggio da inviare");
+                            testo = input.nextLine();
+                            out.writeBytes(testo);
+                            break;
+                        default:
+                            System.out.println("Errore del server");
                     }
-                }while(messaggio.equals("-"));
+                }while(!messaggio.equals("&"));
                 socket.close();
+                input.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
