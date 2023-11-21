@@ -10,7 +10,7 @@ public class App
 {
     public static void main( String[] args ){
         try{
-            Socket socket = new Socket("localhost", 3000);
+            Socket socket = new Socket("10.22.9.2", 3000);
 
                 MioThread thread = new MioThread(socket);
                 thread.start();

@@ -24,23 +24,23 @@ public class MioThread extends Thread{
                 switch(messaggio){
                     case "+":
                         username = in.readLine();
-                        System.out.println(username + " si è unito alla chat");
+                        System.out.println("\n" + username + " si è unito alla chat");
                         break;
                     case "-":
                         username = in.readLine();
-                        System.out.println(username + " ha abbandonato la chat");
+                        System.out.println("\n" + username + " ha abbandonato la chat");
                         break;
                     case "@":
                         username = in.readLine();
                         testo = in.readLine();
-                        System.out.println(username + " ha scritto: " + testo);
+                        System.out.println("\n" + username + " ha scritto: " + testo);
                         break;
                     case "*":
                         username = in.readLine();
                         testo = in.readLine();
-                        System.out.println(username + " ti ha scritto in privato: " + testo);
+                        System.out.println("\n" + username + " ti ha scritto in privato: " + testo);
                 }
-            }while(messaggio.equals("x"));
+            }while(messaggio.equals("&"));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
