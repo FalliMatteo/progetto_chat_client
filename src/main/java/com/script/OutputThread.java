@@ -9,9 +9,11 @@ public class OutputThread extends Thread{
     private Socket socket;
     public static String response;
     public static CountDownLatch latch;
+    private Scanner scanner;
 
-    public OutputThread(Socket socket){
+    public OutputThread(Socket socket, Scanner scanner){
         this.socket = socket;
+        this.scanner = scanner;
         OutputThread.response = null;
     }
 
@@ -19,15 +21,11 @@ public class OutputThread extends Thread{
     public void run(){
         try{
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            Scanner scanner = new Scanner(System.in, "UTF-8");
             String message = "";
             String text;
             do{
                 System.out.println("\nInsert your username: ");
-                // This is the input that makes problems
-                while(scanner.hasNextLine()){
-                    message = scanner.nextLine();
-                };
+                message = scanner.nextLine();
                 if(message.isEmpty()){
                     System.out.println("\nThe string is empty");
                 }else{

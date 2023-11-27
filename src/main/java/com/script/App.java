@@ -22,7 +22,7 @@ public class App
                     found = false;
                 }
             }
-            OutputThread output = new OutputThread(socket);
+            OutputThread output = new OutputThread(socket, scanner);
             InputThread input = new InputThread(socket);
             input.start();
             output.start();
